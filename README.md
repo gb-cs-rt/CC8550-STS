@@ -20,7 +20,7 @@ acervo e gerar relatórios.
 
 ### 1. Correto
 
-**Funcionalidade Relacionada**:  *Enviar lembretes sobre prazos de devolução*
+**Funcionalidade Relacionada**:  **
  
 **Métrica**
  |||
