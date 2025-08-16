@@ -1,5 +1,20 @@
 # Caso para Avaliação - Plataforma de Biblioteca Digital
-Relatório elaborado em laboratório para a disciplina de Simulação e Teste de Software (CC8550)
+
+Cenário: Imagine que você foi convidado a participar do
+planejamento de uma nova plataforma de biblioteca digital
+para uma universidade. O sistema deverá:
+<br><br>
+▶ Permitir que alunos e professores pesquisem por título,
+autor ou assunto;
+<br>
+▶ Disponibilizar o acesso a e-books e permitir reserva de
+livros físicos;
+<br>
+▶ Enviar lembretes sobre prazos de devolução;
+<br>
+▶ Oferecer aos bibliotecários ferramentas para gerenciar o
+acervo e gerar relatórios.
+
 
 ## Características Técnicas
 
@@ -10,20 +25,20 @@ Relatório elaborado em laboratório para a disciplina de Simulação e Teste de
 **Métrica**
  |||
 | -------- | ----- |
-| **Nome da Métrica** | Taxa de falha no envio do lembrete sobre prazos de devolução |
-| **Característica de Qualidade Relacionada** | Correto |
-| **Fórmula de Cálculo** | Quantidade de falhas/ausência no envio do lembrete / Total de envios |
-| **Unidade de Medida** | Não se aplica (porcentagem) |
-| **Meta ou valor de referência desejado** | 0,01% |
+| **Nome da Métrica** |  |
+| **Característica de Qualidade Relacionada** |  |
+| **Fórmula de Cálculo** |  |
+| **Unidade de Medida** |  |
+| **Meta ou valor de referência desejado** |  |
 
 **Teste**
  |||
 | -------- | ----- |
-| **Nome do Teste** | Teste de envios de lembrete sobre prazos de devolução |
-| **Objetivo** | Verificar se todos os envios de lembrete programados/agendados estão sendo devidamente executados |
-| **Pré-condições** | 1. Lista de usuários (mock); 2. Lista de lembretes agendados (mock) |
-| **Passos para a execução** | 1. O teste recebe a lista de usuários e a lista de lembretes agendados como entrada; 2. O sistema dispara os envios dos lembretes agendados; 3. Aguarda-se o horário do lembrete e verifica-se se o mesmo é recebido pelo usuário; 4. Usando a fórmula, calcula-se a taxa de falha no envio do lembrete. |
-| **Resultado esperado** | Espera-se que no mínimo 99,99% dos lembretes agendados sejam enviados pelo sistema e devidamente recebidos pelo usuário. |
+| **Nome do Teste** |  |
+| **Objetivo** |  |
+| **Pré-condições** |  |
+| **Passos para a execução** |  |
+| **Resultado esperado** |  |
 
 ---
 ### 2. Confiável
@@ -33,20 +48,20 @@ Relatório elaborado em laboratório para a disciplina de Simulação e Teste de
 **Métrica**
  |||
 | -------- | ----- |
-| **Nome da Métrica** | Taxa de inconsistência no resultado da busca em relação ao termo de busca |
-| **Característica de Qualidade Relacionada** | Confiável |
-| **Fórmula de Cálculo** | Quantidade de buscas que não correspondem ao termo utilizado / Quantidade total de buscas |
-| **Unidade de Medida** | Não se aplica (porcentagem) |
-| **Meta ou valor de referência desejado** | 1% |
+| **Nome da Métrica** |  |
+| **Característica de Qualidade Relacionada** |  |
+| **Fórmula de Cálculo** |  |
+| **Unidade de Medida** |  |
+| **Meta ou valor de referência desejado** |  |
 
 **Teste**
  |  ||
 | -------- | ----- |
-| **Nome do Teste** | Teste de inconsistência no resultado da busca em relação ao termo de busca |
-| **Objetivo** | Avaliar se o resultado das buscas do sistema são correspondentes ao termo de busca utilizado |
-| **Pré-condições** | Uma lista de termos de busca a serem utilizados no teste |
-| **Passos para a execução** | 1. O teste recebe como entrada um termo de busca a ser avaliado no sistema; 2. Chama-se a funcionalidade de busca (por título, autor, ou assunto) com o termo de busca selecionado; 3. Contam-se a quantidade de resultados que não contenham o termo de busca selecionado em seu título, autor ou assunto; 4. Usando a fórmula, descobre-se a taxa de inconsistência da funcionalidade de busca do sistema. |
-| **Resultado esperado** | Espera-se que a taxa de resultados inconsistentes seja igual ou menor ao valor de referência (1%) |
+| **Nome do Teste** |  |
+| **Objetivo** |  |
+| **Pré-condições** |  |
+| **Passos para a execução** |  |
+| **Resultado esperado** |  |
 
 ---
 ### 3. Eficiente
