@@ -182,91 +182,91 @@ acervo e gerar relatórios.
 ---
 ### 2. Flexível
 
-**Como se aplica ao sistema**: **
+**Como se aplica ao sistema**: *Permitir com que o bibliotecário possa alterar o prazo de um livro sem precisar reprogramá-lo*
  
 **Métrica**
  |||
 | -------- | ----- |
-| **Nome da Métrica** | ... |
-| **Característica de Qualidade Relacionada** | ... |
-| **Fórmula de Cálculo** | ... |
-| **Unidade de Medida** | ... |
-| **Meta ou valor de referência desejado** | ... |
+| **Nome da Métrica** | Tempo para Alterar Prazo |
+| **Característica de Qualidade Relacionada** | Flexível |
+| **Fórmula de Cálculo** | Tempo necessário para alterar o prazo de devolução de um livro |
+| **Unidade de Medida** | Minutos |
+| **Meta ou valor de referência desejado** | <= 5 minutos |
 
 **Teste**
  |||
 | -------- | ----- |
-| **Nome do Teste** | ... |
-| **Objetivo** | ... |
-| **Pré-condições** | ... |
-| **Passos para a execução** | ... |
-| **Resultado esperado** | ... |
+| **Nome do Teste** | Alterar Prazo pelo Painel |
+| **Objetivo** | Verificar se o bibliotecário consegue mudar o prazo de um livro sem precisar reprogramá-lo |
+| **Pré-condições** | Estar logado com usuário de bibliotecário |
+| **Passos para a execução** | 1- Acessar o painel administrativo <br> 2- Alterar o prazo de devolução <br> Salvar as configurações |
+| **Resultado esperado** | O novo prazo passa a valer imediatamente |
 
 ---
 ### 3. Testável
 
-#### Funcionalidade Relacionada: 
+**Como se aplica ao sistema**: *Poder testar separadamente cada funcionalidade*
  
 **Métrica**
  |||
 | -------- | ----- |
-| **Nome da Métrica** | ... |
-| **Característica de Qualidade Relacionada** | ... |
-| **Fórmula de Cálculo** | ... |
-| **Unidade de Medida** | ... |
-| **Meta ou valor de referência desejado** | ... |
+| **Nome da Métrica** | Funcionalidades com Teste Automatizado |
+| **Característica de Qualidade Relacionada** | Testável |
+| **Fórmula de Cálculo** | (Quantidade de funcionalidades com testes automatizados / Total de funcionalidades) * 100 |
+| **Unidade de Medida** | % |
+| **Meta ou valor de referência desejado** | >= 90% |
 
 **Teste**
  |||
 | -------- | ----- |
-| **Nome do Teste** | ... |
-| **Objetivo** | ... |
-| **Pré-condições** | ... |
-| **Passos para a execução** | ... |
-| **Resultado esperado** | ... |
+| **Nome do Teste** | Teste de Reserva |
+| **Objetivo** | Verificar o comportamento da função de reserva de livro isoladamente |
+| **Pré-condições** | Estar em um ambiente de teste com dados fictícios |
+| **Passos para a execução** | 1- Chamar uma função de reserva com livro disponível <br> 2- Chamar a mesma função de reserva, mas agora, sem livros disponíveis |
+| **Resultado esperado** | Mostrar no primeiro caso uma fila de livros e no segundo caso mostrar que não há exemplares disponíveis |
 
 ---
 ### 4. Portável
 
-#### Funcionalidade Relacionada: 
+**Como se aplica ao sistema**: *O sistema deve funcionar em diferentes dispositivos sem falhas* 
  
 **Métrica**
  |||
 | -------- | ----- |
-| **Nome da Métrica** | ... |
-| **Característica de Qualidade Relacionada** | ... |
-| **Fórmula de Cálculo** | ... |
-| **Unidade de Medida** | ... |
-| **Meta ou valor de referência desejado** | ... |
+| **Nome da Métrica** | Problemas de Compatibilidade |
+| **Característica de Qualidade Relacionada** | Portável |
+| **Fórmula de Cálculo** | Quantidade de falhas específicas de dispositivo/navegador identificadas na baterias de testes |
+| **Unidade de Medida** | Contagem |
+| **Meta ou valor de referência desejado** | 0 falhas críticas por release |
 
 **Teste**
  |||
 | -------- | ----- |
-| **Nome do Teste** | ... |
-| **Objetivo** | ... |
-| **Pré-condições** | ... |
-| **Passos para a execução** | ... |
-| **Resultado esperado** | ... |
+| **Nome do Teste** | Funcionalidades Básicas em Múltiplos Dispositivos |
+| **Objetivo** | Verificar se os usuários conseguem efetuar o login, buscar e reservar um livro em diferentes dispositivos |
+| **Pré-condições** | Logar em diferentes dispositivos |
+| **Passos para a execução** | 1- Efetuar login <br> 2- Pesquisar por um livro <br> 3- Reservar um livro |
+| **Resultado esperado** | As 3 ações devem funcionar sem apresentar nenhum tipo de erro nos diferentes dispositivos testados |
 
 ---
 ### 5. Reutilizável
 
-#### Funcionalidade Relacionada: 
+**Como se aplica ao sistema**: *O serviço de envio de notificações usado para lembretes de devolução também pode ser reaproveitado para avisar sobre confirmação de reservas ou outros comunicados* 
  
 **Métrica**
  |||
 | -------- | ----- |
-| **Nome da Métrica** | ... |
-| **Característica de Qualidade Relacionada** | ... |
-| **Fórmula de Cálculo** | ... |
-| **Unidade de Medida** | ... |
-| **Meta ou valor de referência desejado** | ... |
+| **Nome da Métrica** | Percentual de Reuso do Serviço de Notificação |
+| **Característica de Qualidade Relacionada** | Reutilizável |
+| **Fórmula de Cálculo** | (Números de funcionalidades que utilizam o mesmo serviço / Total de funcionalidades que precisam enviar notificações) * 100 |
+| **Unidade de Medida** | % |
+| **Meta ou valor de referência desejado** | >= 80% |
 
 **Teste**
  |||
 | -------- | ----- |
-| **Nome do Teste** | ... |
-| **Objetivo** | ... |
-| **Pré-condições** | ... |
-| **Passos para a execução** | ... |
-| **Resultado esperado** | ... |
+| **Nome do Teste** | Reuso do Serviço de Notificação em Diferentes Casos |
+| **Objetivo** | Validar que o mesmo serviço de notificação funciona para lembretes de devolução e confirmaçao de reservas |
+| **Pré-condições** | Serviço de notificação implementado |
+| **Passos para a execução** | 1- Gerar lembrete de devolução <br> 2- Gerar confirmação de reserva <br> 3- Verificar se os lembretes foram enviado com sucesso |
+| **Resultado esperado** | O mesmo serviço conseguir enviar corretamente os dois lembretes |
