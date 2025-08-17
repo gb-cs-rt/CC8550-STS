@@ -117,20 +117,20 @@ acervo e gerar relatórios.
 **Métrica**
  |||
 | -------- | ----- |
-| **Nome da Métrica** |  |
-| **Característica de Qualidade Relacionada** |  |
-| **Fórmula de Cálculo** |  |
-| **Unidade de Medida** |  |
-| **Meta ou valor de referência desejado** |  |
+| **Nome da Métrica** | Sucesso de Tarefas |
+| **Característica de Qualidade Relacionada** | Fácil de Usar |
+| **Fórmula de Cálculo** | (Usuário de conseguem concluir uma tarefa / Usuários que tentaram realizar uma tarefa) * 100 |
+| **Unidade de Medida** | % |
+| **Meta ou valor de referência desejado** | >= 90% |
 
 **Teste**
  |||
 | -------- | ----- |
-| **Nome do Teste** |  |
-| **Objetivo** |  |
-| **Pré-condições** |  |
-| **Passos para a execução** |  |
-| **Resultado esperado** |  |
+| **Nome do Teste** | Tentativa de Reserva |
+| **Objetivo** | Verificar se usuários conseguem reservar um livro sem ajuda |
+| **Pré-condições** | Possuir um livro para reserva |
+| **Passos para a execução** | 1- Usuário realizar todo o processo de reserva de um livro <br> 2- Observar todo o processo até a finalização |
+| **Resultado esperado** | Que pelo menos 95% dos usuários consigam reservar um livro sem nenhuma ajuda |
 
 ---
 ### 6. Interoperável
@@ -140,20 +140,20 @@ acervo e gerar relatórios.
 **Métrica**
  |||
 | -------- | ----- |
-| **Nome da Métrica** | ... |
-| **Característica de Qualidade Relacionada** | ... |
-| **Fórmula de Cálculo** | ... |
-| **Unidade de Medida** | ... |
-| **Meta ou valor de referência desejado** | ... |
+| **Nome da Métrica** | Erros de Sincronização |
+| **Característica de Qualidade Relacionada** | Interoperável |
+| **Fórmula de Cálculo** | Número de falhas ao consultar/validar dados no banco de dados da universidade |
+| **Unidade de Medida** | Contagem |
+| **Meta ou valor de referência desejado** | 0 falhas críticas por semana |
 
 **Teste**
  |||
 | -------- | ----- |
-| **Nome do Teste** | ... |
-| **Objetivo** | ... |
-| **Pré-condições** | ... |
-| **Passos para a execução** | ... |
-| **Resultado esperado** | ... |
+| **Nome do Teste** | Realizar Login com Credenciais da Universidade |
+| **Objetivo** | Verfificar se o sistema aceita o login com usuário/senha já cadastrados na universidade |
+| **Pré-condições** | Já possuir um cadastro ativo no sistema da universidade |
+| **Passos para a execução** | 1- Acessar a tela de login <br> 2- Inserir usuário e senha válidos da universidade <br> 3- Confirmar o login |
+| **Resultado esperado** | Conseguir acessar o sistema |
 
 ## Características de Manutenção
 
@@ -164,20 +164,20 @@ acervo e gerar relatórios.
 **Métrica**
  |||
 | -------- | ----- |
-| **Nome da Métrica** | ... |
-| **Característica de Qualidade Relacionada** | ... |
-| **Fórmula de Cálculo** | ... |
-| **Unidade de Medida** | ... |
-| **Meta ou valor de referência desejado** | ... |
+| **Nome da Métrica** | Tempo Médio de Correção de Erros |
+| **Característica de Qualidade Relacionada** | Manutenível |
+| **Fórmula de Cálculo** | Soma do tempo gasto para corrgir uma falha / número de falhas corrigidas |
+| **Unidade de Medida** | Dias |
+| **Meta ou valor de referência desejado** | <= 2 dias |
 
 **Teste**
  |||
 | -------- | ----- |
-| **Nome do Teste** | Validação de busca por autor |
-| **Objetivo** | Verificar se a busca retorna obras de determinado autor corretamente |
-| **Pré-condições** | O usuário colocar o autor que deseja e o sistema identificar o autor |
-| **Passos para a execução** | 1- Inserir o nome do autor <br> 2- Executar a pesquisa <br> 3- Verificar os resultados |
-| **Resultado esperado** | O sistema retornar uma lista de obras do autor escolhido |
+| **Nome do Teste** | Teste de Isolamento de Serviço |
+| **Objetivo** | Garantir que ao modificar um serviço, os outros continuem funcionando normalmente |
+| **Pré-condições** | Sistemas divididos em serviços independentes |
+| **Passos para a execução** | 1- Alterar código de um serviço qualquer <br> 2- Verificar se os demais continuam funcionando |
+| **Resultado esperado** | Apenas o serviço alterado devem ser afetado |
 
 ---
 ### 2. Flexível
