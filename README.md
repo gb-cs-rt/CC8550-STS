@@ -275,3 +275,12 @@ acervo e gerar relatórios.
 **Explique como essas métricas e testes garantem o bom funcionamento e a manutenção do sistema.**
 
 As métricas e os testes definidos funcionam como uma forma de medir e validar continuamente a qualidade do sistema, garantindo que ele se mantenha confiável, eficiente e fácil de usar. As métricas permitem acompanhar de forma objetiva aspectos como tempo de resposta, taxa de erros ou sucesso em tarefas, ajudando a identificar pontos de melhoria antes que causem impacto aos usuários. Já os testes verificam na prática se cada funcionalidade está operando como esperado, simulando diferentes situações de uso (corretas, incorretas ou de falha). Juntos, eles asseguram que o sistema continue funcionando bem ao longo do tempo e que possa ser mantido e evoluído com segurança, evitando retrabalho e aumentando a confiança de alunos, professores e bibliotecários no uso da plataforma.
+
+
+## Membros do Grupo
+
+> Felipe Orlando Lanzara - 22.225.015-1
+
+> Pedro Henrique Lega Kramer Costa - 22.125.091-3
+
+> Ruan Pastrelo Turola - 22.225.013-6
