@@ -43,3 +43,5 @@ do serviço podem ficar, na verdade, R$ 5 milhões mais caros.
 | **Descomissionamento final**  | Encerramento da usina ao fim da vida útil. | 35 milhões |
 | **Valor total do projeto**    | Lucro acumulado − Custo de construção − Descomissionamento: <br> 300 milhões - 100 milhões - 35 milhões | **165 milhões** |
 
+O valor total auferido pelo projeto, sem considerar os riscos, é de R$ 165 milhões ao longo dos 10 anos de operação.
+
