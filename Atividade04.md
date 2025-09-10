@@ -41,15 +41,31 @@ do serviço podem ficar, na verdade, R$ 5 milhões mais caros.
 
 **Valor auferido pelo projeto (sem considerar riscos)**
 
-| Item                          | Explicação                                                                 | Valor (R$) |
-|-------------------------------|-----------------------------------------------------------------------------|--------------------|
-| **Custo de construção**       | Investimento inicial necessário para erguer a usina | 100 milhões|
-| **Receita anual**             | Venda de energia | 40 milhões/ano |
-| **Custos operacionais e de manutenção (anual)** | Despesas fixas com operação e manutenção | 10 milhões/ano |
-| **Lucro operacional anual**   | Receita − Custos operacionais e de manutenção: <br> 40 milhões − 10 milhões | 30 milhões/ano |
-| **Período de 10 anos**        | Lucro líquido anual multiplicado por 10 anos: <br> 30 milhões × 10 milhões| 300 milhões |
-| **Descomissionamento final**  | Encerramento da usina ao fim da vida útil. | 35 milhões |
-| **Valor total do projeto**    | Lucro acumulado − Custo de construção − Descomissionamento: <br> 300 milhões - 100 milhões - 35 milhões | **165 milhões** |
+| Item                                            | Explicação                                                                                              | Valor (R$)      |
+|-------------------------------------------------|---------------------------------------------------------------------------------------------------------|-----------------|
+| **Custo de construção**                         | Investimento inicial necessário para erguer a usina                                                     | 100 milhões     |
+| **Receita anual**                               | Venda de energia                                                                                        | 40 milhões/ano  |
+| **Custos operacionais e de manutenção (anual)** | Despesas fixas com operação e manutenção                                                                | 10 milhões/ano  |
+| **Lucro operacional anual**                     | Receita − Custos operacionais e de manutenção: <br> 40 milhões − 10 milhões                             | 30 milhões/ano  |
+| **Período de 10 anos**                          | Lucro líquido anual multiplicado por 10 anos: <br> 30 milhões × 10 milhões                              | 300 milhões     |
+| **Descomissionamento final**                    | Encerramento da usina ao fim da vida útil.                                                              | 35 milhões      |
+| **Valor total do projeto**                      | Lucro acumulado − Custo de construção − Descomissionamento: <br> 300 milhões - 100 milhões - 35 milhões | **165 milhões** |
 
 O valor total auferido pelo projeto, sem considerar os riscos, é de R$ 165 milhões ao longo dos 10 anos de operação.
 
+### *2. Identifique os riscos apresentados para o projeto.*
+
+| **Risco**                                         | **Probabilidade**   | **Impacto**                                      | **Valor do Impacto (R$)**         | **Valor Esperado (R$)**                         |
+|---------------------------------------------------|---------------------|--------------------------------------------------|-----------------------------------|-------------------------------------------------|
+| **Litígio ambiental**                             | 10%                 | Aumento no custo de construção                   | +20 milhões                       | -2 milhões                                      |
+| **Aumento no preço da eletricidade**              | 25%                 | Lucros adicionais pela venda de energia          | +10 por ano                       | +2,5 milhões (por ano) × 10 = +25 milhões       |
+| **Aumento de impostos imobiliários**              | 40%                 | Redução nos lucros devido ao aumento de impostos | -2 milhões por ano                | -0,8 milhões (por ano) × 10 = -8 milhões        |
+| **Incêndio provocado por heliostatos**            | 25% por ano         | Redução nos lucros devido ao incêndio            | -1 milhões por ano                | -0,25 milhões (por ano) × 10 = -2,5 milhões     |
+| **Custos adicionais de descomissionamento**       | 35% ao final        | Aumento nos custos de desativação                | +5 milhões no Ano 10              | -1,75 milhões                                   |
+| **Total**                                         |                     |                                                  |                                   | **+10,75** milhões                              |
+
+### *3. Desenvolva a análise quantitativa atráves da técnica do Valor Esperado e responda:*
+
+#### *a) Qual o valor esperado total do projeto, considerando todos os riscos?*
+
+O valor esperado total do projeto, considerando todos os riscos identificados, é de R$ 165 milhões, somados ao valor esperado dos riscos, que totalizam R$ 10,75 milhões. Assim, o valor esperado final do projeto é de **R$ 175,75 milhões**.
