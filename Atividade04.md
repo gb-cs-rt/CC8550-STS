@@ -27,6 +27,14 @@ A divisão de negócios do governo estima que há uma probabilidade de 35% de qu
 requisitos ambientais sejam aprovados no final de 10 anos, de forma que os custos de retirada
 do serviço podem ficar, na verdade, R$ 5 milhões mais caros.
 
+## Membros do Grupo
+
+> Felipe Orlando Lanzara - 22.225.015-1
+
+> Pedro Henrique Lega Kramer Costa - 22.125.091-3
+
+> Ruan Pastrelo Turola - 22.225.013-6
+
 ## Questões
 
 ### *1. Qual o valor a ser auferido pelo projeto sem considerar os riscos?*
