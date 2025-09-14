@@ -1,7 +1,7 @@
 import unittest
 from src.calculadora import Calculadora
 
-class TestCalculadora(unittest.TestCase):
+class TestUnidade(unittest.TestCase):
 
     def setUp(self):
         self.calc = Calculadora()
@@ -32,6 +32,12 @@ class TestCalculadora(unittest.TestCase):
         self.assertEqual(resultado, 2)
         self.assertEqual(calc.obter_ultimo_resultado(), 2)
 
+    def test_entrada_saida_potencia(self):
+        calc = Calculadora()
+        resultado = calc.potencia(2, 3)
+        self.assertEqual(resultado, 8)
+        self.assertEqual(calc.obter_ultimo_resultado(), 8)
+
     ## TESTE DE TIPAGEM
 
     def test_tipagem_invalida(self):
@@ -40,8 +46,6 @@ class TestCalculadora(unittest.TestCase):
             calc.somar("5", 3)  # String no lugar de número
         with self.assertRaises(TypeError):
             calc.dividir(10, None)  # None no lugar de número
-
-    ## implemente para todas as operações matemáticas
 
     def test_tipagem_invalida_soma(self):
         calc = Calculadora()
@@ -70,6 +74,13 @@ class TestCalculadora(unittest.TestCase):
             calc.dividir("5", 3)  # String no lugar de número
         with self.assertRaises(TypeError):
             calc.dividir(5, None)  # None no lugar de número
+
+    def test_tipagem_invalida_potencia(self):
+        calc = Calculadora()
+        with self.assertRaises(TypeError):
+            calc.potencia("2", 3)  # String no lugar de número
+        with self.assertRaises(TypeError):
+            calc.potencia(2, None)  # None no lugar de número
 
     ## TESTE DE CONSISTENCIA
 
@@ -115,3 +126,36 @@ class TestCalculadora(unittest.TestCase):
         # Teste com numeros  grandes
         resultado = calc.somar(1e10, 1e10)
         self.assertEqual(resultado, 2e10)
+
+    # NAO SEI SE TA CERTO
+    def test_limite_superior_float(self):
+        calc = Calculadora()
+        resultado = calc.somar(1e308, 1e308)
+        self.assertEqual(resultado, float("inf"))
+
+    ## TESTE DE VALORES FORA DO INTERVALO 
+
+    def test_divisao_por_zero(self):
+        calc = Calculadora()
+        with self.assertRaises(ValueError):
+            calc.dividir(10, 0)
+
+    ## TESTE DE FLUXOS DE CONTROLE 
+
+    def test_fluxos_divisao(self):
+        calc = Calculadora()
+        # Caminho normal
+        resultado = calc.dividir(10, 2)
+        self.assertEqual(resultado, 5)
+        # Caminho de erro
+        with self.assertRaises(ValueError):
+            calc.dividir(10, 0)
+
+    ## TESTE DE MENSAGENS DE ERRO
+
+    def test_mensagens_erro(self):
+        calc = Calculadora()
+        try:
+            calc.dividir(5, 0)
+        except ValueError as e:
+            self.assertEqual(str(e), "Divisão por zero nao permitida")
