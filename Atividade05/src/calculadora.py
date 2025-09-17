@@ -53,4 +53,3 @@ class Calculadora:
     def obter_ultimo_resultado(self):
         return self.resultado
     
-
