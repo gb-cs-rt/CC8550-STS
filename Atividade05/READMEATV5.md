@@ -46,7 +46,7 @@ pip install -r requirements.txt
 
 - Executar com cobertura e gerar relatório HTML:
   ```
-  python3 -m coverage run --source=src -m unittest discover
+  python3 -m coverage run -m unittest discover
   python3 -m coverage report -m
   python3 -m coverage html
   ```
