@@ -20,6 +20,18 @@ class TestIntegracao(unittest.TestCase):
         self.assertEqual(resultado_final, 10)
         self.assertEqual(len(calc.historico), 3)
 
+    # Extra: operacoes sequenciais incorretas
+    def test_operacoes_sequenciais_incorretas(self):
+        calc = Calculadora()
+        # Sequencia: 10 - 2 = 8, depois 8 ^ 2 = 64, depois 64 / 4 = 16
+        calc.subtrair(10, 2)
+        resultado1 = calc.obter_ultimo_resultado()
+        calc.potencia(resultado1, 2)
+        resultado2 = calc.obter_ultimo_resultado()
+        calc.dividir(resultado2, 4)
+        resultado_final = calc.obter_ultimo_resultado()
+        self.assertEqual(resultado_final, 15)
+        self.assertEqual(len(calc.historico), 3) 
 
     ## TESTE DE INTERFACE ENTRE METODOS
 
@@ -43,18 +55,6 @@ class TestIntegracao(unittest.TestCase):
         self.assertEqual(calc.obter_ultimo_resultado(), 30)
         self.assertEqual(len(calc.historico), 1)
         self.assertIn("10 * 3 = 30", calc.historico)
-
-    # Extra: cadeia potência -> soma -> divisão
-    def test_integracao_cadeia_operacoes(self):
-        calc = Calculadora()
-        calc.potencia(3, 2)  # 9
-        calc.somar(calc.obter_ultimo_resultado(), 6)  # 15
-        calc.dividir(calc.obter_ultimo_resultado(), 3)  # 5
-        self.assertEqual(calc.obter_ultimo_resultado(), 5)
-        self.assertEqual(len(calc.historico), 3)
-        self.assertIn("3 ^ 2 = 9", calc.historico)
-        self.assertIn("9 + 6 = 15", calc.historico)
-        self.assertIn("15 / 3 = 5.0", calc.historico)
 
 if __name__ == '__main__':
     unittest.main()
