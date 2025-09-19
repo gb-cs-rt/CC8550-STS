@@ -38,6 +38,13 @@ class TestUnidade(unittest.TestCase):
         self.assertEqual(resultado, 8)
         self.assertEqual(calc.obter_ultimo_resultado(), 8)
 
+    # Extra: entrada/saída com floats e negativos
+    def test_entrada_saida_misto_float_negativo(self):
+        calc = Calculadora()
+        resultado = calc.somar(-2.5, 0.5)
+        self.assertEqual(resultado, -2.0)
+        self.assertEqual(calc.obter_ultimo_resultado(), -2.0)
+
     ## TESTE DE TIPAGEM
 
     def test_tipagem_invalida(self):
@@ -82,6 +89,14 @@ class TestUnidade(unittest.TestCase):
         with self.assertRaises(TypeError):
             calc.potencia(2, None)  # None no lugar de número
 
+    # Extra: Tipos estruturados inválidos
+    def test_tipagem_invalida_estruturas(self):
+        calc = Calculadora()
+        with self.assertRaises(TypeError):
+            calc.somar([1, 2], 3)
+        with self.assertRaises(TypeError):
+            calc.multiplicar({"a": 1}, 2)
+
     ## TESTE DE CONSISTENCIA
 
     def test_consistencia_historico(self):
@@ -92,12 +107,31 @@ class TestUnidade(unittest.TestCase):
         self.assertIn("2 + 3 = 5", calc.historico)
         self.assertIn("4 * 5 = 20", calc.historico)
 
+    # Extra: Ordem exata do histórico
+    def test_consistencia_ordem_historico(self):
+        calc = Calculadora()
+        calc.subtrair(10, 4)
+        calc.dividir(12, 3)
+        esperado = [
+            "10 - 4 = 6",
+            "12 / 3 = 4.0",
+        ]
+        self.assertEqual(calc.historico, esperado)
+
     ## TESTE DE INICIALIZACAO
 
     def teste_inicializacao(self):
         calc = Calculadora()
         self.assertEqual(calc.resultado, 0)
         self.assertEqual(len(calc.historico), 0)
+
+    # Extra: Inicialização independente entre instâncias
+    def test_inicializacao_instancias_independentes(self):
+        a = Calculadora()
+        b = Calculadora()
+        a.somar(1, 2)
+        self.assertEqual(len(a.historico), 1)
+        self.assertEqual(len(b.historico), 0)
 
     ## TESTE DE MODIFICACAO DE DADOS
 
@@ -107,6 +141,14 @@ class TestUnidade(unittest.TestCase):
         self.assertEqual(len(calc.historico), 1)
         calc.limpar_historico()
         self.assertEqual(len(calc.historico), 0)
+
+    # Extra: limpar histórico não altera resultado
+    def test_limpar_historico_preserva_resultado(self):
+        calc = Calculadora()
+        calc.multiplicar(3, 3)
+        self.assertEqual(calc.obter_ultimo_resultado(), 9)
+        calc.limpar_historico()
+        self.assertEqual(calc.obter_ultimo_resultado(), 9)
 
     ## TESTE DE LIMITE INFERIOR
 
@@ -119,6 +161,12 @@ class TestUnidade(unittest.TestCase):
         resultado = calc.multiplicar(-1e-10, 2)
         self.assertEqual(resultado, -2e-10)
 
+    # Extra: potencia com expoente zero
+    def test_limite_inferior_potencia_expoente_zero(self):
+        calc = Calculadora()
+        resultado = calc.potencia(5, 0)
+        self.assertEqual(resultado, 1)
+
     ## TESTE DE LIMITE SUPERIOR
 
     def test_limite_superior(self):
@@ -127,10 +175,15 @@ class TestUnidade(unittest.TestCase):
         resultado = calc.somar(1e10, 1e10)
         self.assertEqual(resultado, 2e10)
 
-    # NAO SEI SE TA CERTO
     def test_limite_superior_float(self):
         calc = Calculadora()
         resultado = calc.somar(1e308, 1e308)
+        self.assertEqual(resultado, float("inf"))
+
+    # Extra: multiplicação que estoura para infinito
+    def test_limite_superior_multiplicacao_inf(self):
+        calc = Calculadora()
+        resultado = calc.multiplicar(1e308, 2)
         self.assertEqual(resultado, float("inf"))
 
     ## TESTE DE VALORES FORA DO INTERVALO 
@@ -139,6 +192,12 @@ class TestUnidade(unittest.TestCase):
         calc = Calculadora()
         with self.assertRaises(ValueError):
             calc.dividir(10, 0)
+
+    # Extra: divisão por zero em float
+    def test_divisao_por_zero_float(self):
+        calc = Calculadora()
+        with self.assertRaises(ValueError):
+            calc.dividir(10, 0.0)
 
     ## TESTE DE FLUXOS DE CONTROLE 
 
@@ -151,6 +210,12 @@ class TestUnidade(unittest.TestCase):
         with self.assertRaises(ValueError):
             calc.dividir(10, 0)
 
+    # Extra: fluxo com números negativos
+    def test_fluxos_divisao_negativos(self):
+        calc = Calculadora()
+        resultado = calc.dividir(-9, 3)
+        self.assertEqual(resultado, -3)
+
     ## TESTE DE MENSAGENS DE ERRO
 
     def test_mensagens_erro(self):
@@ -159,3 +224,63 @@ class TestUnidade(unittest.TestCase):
             calc.dividir(5, 0)
         except ValueError as e:
             self.assertEqual(str(e), "Divisão por zero nao permitida")
+
+    # Extra: mensagem de erro com divisor float
+    def test_mensagens_erro_float(self):
+        calc = Calculadora()
+        with self.assertRaises(ValueError) as ctx:
+            calc.dividir(5, 0.0)
+        self.assertEqual(str(ctx.exception), "Divisão por zero nao permitida")
+
+    # ==========================
+    # TESTES EXTRAS (PROBLEMÁTICOS)
+    # Estes testes expõem comportamentos problemáticos do código atual
+    # e devem falhar até que o código seja corrigido.
+    # ==========================
+
+    # 1) Booleanos são aceitos como números (bool é subclass de int em Python)
+    #    Idealmente, a calculadora deveria rejeitar True/False como operandos.
+    def test_tipagem_booleana_deve_ser_rejeitada(self):
+        calc = Calculadora()
+        with self.assertRaises(TypeError):
+            calc.somar(True, 3)
+        with self.assertRaises(TypeError):
+            calc.multiplicar(False, 10)
+
+    # 2) Potência com base negativa e expoente fracionário gera número complexo.
+    #    Para uma calculadora real, espera-se erro (valor não real), não complex.
+    def test_potencia_base_negativa_expoente_fracionario(self):
+        calc = Calculadora()
+        with self.assertRaises(ValueError):
+            calc.potencia(-8, 1/3)
+
+    # 3) NaN/Inf deveriam ser rejeitados para evitar resultados não numéricos
+    #    ou não finitos no histórico.
+    def test_rejeitar_nan_e_inf(self):
+        calc = Calculadora()
+        with self.assertRaises(ValueError):
+            calc.somar(float('nan'), 1)
+        with self.assertRaises(ValueError):
+            calc.subtrair(1, float('inf'))
+        with self.assertRaises(ValueError):
+            calc.dividir(1, float('-inf'))
+
+    # 4) Formatação de floats no histórico: 0.1 + 0.2 deveria registrar 0.3,
+    #    não 0.30000000000000004.
+    def test_formatacao_decimal_no_historico(self):
+        calc = Calculadora()
+        calc.somar(0.1, 0.2)
+        self.assertIn("0.1 + 0.2 = 0.3", calc.historico)
+
+    # 5) Encapsulamento do histórico: expor a lista pública permite mutação externa.
+    #    Ideal seria retornar uma cópia ou propriedade somente leitura.
+    def test_historico_nao_deve_poder_ser_mutado_externamente(self):
+        calc = Calculadora()
+        calc.somar(1, 2)
+        tamanho_antes = len(calc.historico)
+        # Mutação externa indevida
+        calc.historico.append("insercao indevida")
+        self.assertEqual(len(calc.historico), tamanho_antes)
+
+if __name__ == '__main__':
+    unittest.main()
