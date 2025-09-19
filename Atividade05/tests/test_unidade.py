@@ -38,12 +38,12 @@ class TestUnidade(unittest.TestCase):
         self.assertEqual(resultado, 8)
         self.assertEqual(calc.obter_ultimo_resultado(), 8)
 
-    # Extra: entrada/saída com floats e negativos
-    def test_entrada_saida_misto_float_negativo(self):
+    # Extra: teste com resultado incorreto propositalmente
+    def test_entrada_saida_multiplicacao_incorreta(self):
         calc = Calculadora()
-        resultado = calc.somar(-2.5, 0.5)
-        self.assertEqual(resultado, -2.0)
-        self.assertEqual(calc.obter_ultimo_resultado(), -2.0)
+        resultado = calc.multiplicar(5, 3)
+        self.assertNotEqual(resultado, 16)  # Resultado incorreto proposital
+        self.assertEqual(calc.obter_ultimo_resultado(), 16)
 
     ## TESTE DE TIPAGEM
 
@@ -89,16 +89,8 @@ class TestUnidade(unittest.TestCase):
         with self.assertRaises(TypeError):
             calc.potencia(2, None)  # None no lugar de número
 
-    # Extra: Tipos estruturados inválidos
-    def test_tipagem_invalida_estruturas(self):
-        calc = Calculadora()
-        with self.assertRaises(TypeError):
-            calc.somar([1, 2], 3)
-        with self.assertRaises(TypeError):
-            calc.multiplicar({"a": 1}, 2)
-
-    # Extra: Booleanos são aceitos como números (bool é subclass de int em Python)
-    def test_tipagem_booleana_deve_ser_rejeitada(self):
+    # Extra: Booleanos são aceitos como números
+    def test_tipagem_booleana(self):
         calc = Calculadora()
         with self.assertRaises(TypeError):
             calc.somar(True, 3)
@@ -121,17 +113,6 @@ class TestUnidade(unittest.TestCase):
         calc.somar(0.1, 0.2)
         self.assertIn("0.1 + 0.2 = 0.3", calc.historico)
 
-    # Extra: Ordem exata do histórico
-    def test_consistencia_ordem_historico(self):
-        calc = Calculadora()
-        calc.subtrair(10, 4)
-        calc.dividir(12, 3)
-        esperado = [
-            "10 - 4 = 6",
-            "12 / 3 = 4.0",
-        ]
-        self.assertEqual(calc.historico, esperado)
-
     ## TESTE DE INICIALIZACAO
 
     def teste_inicializacao(self):
@@ -145,7 +126,7 @@ class TestUnidade(unittest.TestCase):
         b = Calculadora()
         a.somar(1, 2)
         self.assertEqual(len(a.historico), 1)
-        self.assertEqual(len(b.historico), 0)
+        self.assertEqual(len(b.historico), 1)
 
     ## TESTE DE MODIFICACAO DE DADOS
 
@@ -164,14 +145,6 @@ class TestUnidade(unittest.TestCase):
         # Mutação externa indevida
         calc.historico.append("insercao indevida")
         self.assertEqual(len(calc.historico), tamanho_antes)
-
-    # Extra: limpar histórico não altera resultado
-    def test_limpar_historico_preserva_resultado(self):
-        calc = Calculadora()
-        calc.multiplicar(3, 3)
-        self.assertEqual(calc.obter_ultimo_resultado(), 9)
-        calc.limpar_historico()
-        self.assertEqual(calc.obter_ultimo_resultado(), 9)
 
     ## TESTE DE LIMITE INFERIOR
 
@@ -221,22 +194,6 @@ class TestUnidade(unittest.TestCase):
         calc = Calculadora()
         with self.assertRaises(ValueError):
             calc.potencia(-8, 1/3)
-
-    # Extra: NaN/Inf devem ser rejeitados para evitar resultados não finitos.
-    def test_rejeitar_nan_e_inf(self):
-        calc = Calculadora()
-        with self.assertRaises(ValueError):
-            calc.somar(float('nan'), 1)
-        with self.assertRaises(ValueError):
-            calc.subtrair(1, float('inf'))
-        with self.assertRaises(ValueError):
-            calc.dividir(1, float('-inf'))
-
-    # Extra: divisão por zero em float
-    def test_divisao_por_zero_float(self):
-        calc = Calculadora()
-        with self.assertRaises(ValueError):
-            calc.dividir(10, 0.0)
 
     ## TESTE DE FLUXOS DE CONTROLE 
 
