@@ -97,6 +97,14 @@ class TestUnidade(unittest.TestCase):
         with self.assertRaises(TypeError):
             calc.multiplicar({"a": 1}, 2)
 
+    # Extra: Booleanos são aceitos como números (bool é subclass de int em Python)
+    def test_tipagem_booleana_deve_ser_rejeitada(self):
+        calc = Calculadora()
+        with self.assertRaises(TypeError):
+            calc.somar(True, 3)
+        with self.assertRaises(TypeError):
+            calc.multiplicar(False, 10)
+
     ## TESTE DE CONSISTENCIA
 
     def test_consistencia_historico(self):
@@ -106,6 +114,12 @@ class TestUnidade(unittest.TestCase):
         self.assertEqual(len(calc.historico), 2)
         self.assertIn("2 + 3 = 5", calc.historico)
         self.assertIn("4 * 5 = 20", calc.historico)
+
+    # Extra: formatação de floats no histórico: 0.1 + 0.2 deveria registrar 0.3.
+    def test_formatacao_decimal_no_historico(self):
+        calc = Calculadora()
+        calc.somar(0.1, 0.2)
+        self.assertIn("0.1 + 0.2 = 0.3", calc.historico)
 
     # Extra: Ordem exata do histórico
     def test_consistencia_ordem_historico(self):
@@ -141,6 +155,15 @@ class TestUnidade(unittest.TestCase):
         self.assertEqual(len(calc.historico), 1)
         calc.limpar_historico()
         self.assertEqual(len(calc.historico), 0)
+
+    # Extra: encapsulamento do histórico: não deve poder ser mutado externamente.
+    def test_historico_nao_deve_poder_ser_mutado_externamente(self):
+        calc = Calculadora()
+        calc.somar(1, 2)
+        tamanho_antes = len(calc.historico)
+        # Mutação externa indevida
+        calc.historico.append("insercao indevida")
+        self.assertEqual(len(calc.historico), tamanho_antes)
 
     # Extra: limpar histórico não altera resultado
     def test_limpar_historico_preserva_resultado(self):
@@ -193,6 +216,22 @@ class TestUnidade(unittest.TestCase):
         with self.assertRaises(ValueError):
             calc.dividir(10, 0)
 
+    # Extra: potência com base negativa e expoente fracionário deve gerar erro (não real).
+    def test_potencia_base_negativa_expoente_fracionario(self):
+        calc = Calculadora()
+        with self.assertRaises(ValueError):
+            calc.potencia(-8, 1/3)
+
+    # Extra: NaN/Inf devem ser rejeitados para evitar resultados não finitos.
+    def test_rejeitar_nan_e_inf(self):
+        calc = Calculadora()
+        with self.assertRaises(ValueError):
+            calc.somar(float('nan'), 1)
+        with self.assertRaises(ValueError):
+            calc.subtrair(1, float('inf'))
+        with self.assertRaises(ValueError):
+            calc.dividir(1, float('-inf'))
+
     # Extra: divisão por zero em float
     def test_divisao_por_zero_float(self):
         calc = Calculadora()
@@ -231,56 +270,6 @@ class TestUnidade(unittest.TestCase):
         with self.assertRaises(ValueError) as ctx:
             calc.dividir(5, 0.0)
         self.assertEqual(str(ctx.exception), "Divisão por zero nao permitida")
-
-    # ==========================
-    # TESTES EXTRAS (PROBLEMÁTICOS)
-    # Estes testes expõem comportamentos problemáticos do código atual
-    # e devem falhar até que o código seja corrigido.
-    # ==========================
-
-    # 1) Booleanos são aceitos como números (bool é subclass de int em Python)
-    #    Idealmente, a calculadora deveria rejeitar True/False como operandos.
-    def test_tipagem_booleana_deve_ser_rejeitada(self):
-        calc = Calculadora()
-        with self.assertRaises(TypeError):
-            calc.somar(True, 3)
-        with self.assertRaises(TypeError):
-            calc.multiplicar(False, 10)
-
-    # 2) Potência com base negativa e expoente fracionário gera número complexo.
-    #    Para uma calculadora real, espera-se erro (valor não real), não complex.
-    def test_potencia_base_negativa_expoente_fracionario(self):
-        calc = Calculadora()
-        with self.assertRaises(ValueError):
-            calc.potencia(-8, 1/3)
-
-    # 3) NaN/Inf deveriam ser rejeitados para evitar resultados não numéricos
-    #    ou não finitos no histórico.
-    def test_rejeitar_nan_e_inf(self):
-        calc = Calculadora()
-        with self.assertRaises(ValueError):
-            calc.somar(float('nan'), 1)
-        with self.assertRaises(ValueError):
-            calc.subtrair(1, float('inf'))
-        with self.assertRaises(ValueError):
-            calc.dividir(1, float('-inf'))
-
-    # 4) Formatação de floats no histórico: 0.1 + 0.2 deveria registrar 0.3,
-    #    não 0.30000000000000004.
-    def test_formatacao_decimal_no_historico(self):
-        calc = Calculadora()
-        calc.somar(0.1, 0.2)
-        self.assertIn("0.1 + 0.2 = 0.3", calc.historico)
-
-    # 5) Encapsulamento do histórico: expor a lista pública permite mutação externa.
-    #    Ideal seria retornar uma cópia ou propriedade somente leitura.
-    def test_historico_nao_deve_poder_ser_mutado_externamente(self):
-        calc = Calculadora()
-        calc.somar(1, 2)
-        tamanho_antes = len(calc.historico)
-        # Mutação externa indevida
-        calc.historico.append("insercao indevida")
-        self.assertEqual(len(calc.historico), tamanho_antes)
 
 if __name__ == '__main__':
     unittest.main()
