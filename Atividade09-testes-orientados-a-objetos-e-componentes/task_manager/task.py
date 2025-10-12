@@ -26,3 +26,8 @@ class Task:
             raise ValueError("O título deve ter pelo menos 3 caracteres.")
         if self.prazo < datetime.now():
             raise ValueError("O prazo não pode ser uma data passada.")
+
+    def atualizar_status(self, novo_status: Status):
+        if not isinstance(novo_status, Status):
+            raise ValueError("Status inválido.")
+        self.status = novo_status

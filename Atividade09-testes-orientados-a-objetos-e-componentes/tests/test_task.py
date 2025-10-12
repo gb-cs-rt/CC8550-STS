@@ -30,4 +30,18 @@ class TestTask:
         prazo = datetime.now() - timedelta(days=1)
         task = Task(None, "Tarefa", "Desc", Priority.MEDIA, prazo)
         with pytest.raises(ValueError):
-            task.validar()  
+            task.validar()
+
+    def test_atualizar_status_valido(self):
+        """Teste de atualização de status válido."""
+        self.task.atualizar_status(Status.EM_ANDAMENTO)
+        assert self.task.status == Status.EM_ANDAMENTO
+        self.task.atualizar_status(Status.CONCLUIDA)
+        assert self.task.status == Status.CONCLUIDA
+        self.task.atualizar_status(Status.PENDENTE)
+        assert self.task.status == Status.PENDENTE
+
+    def test_atualizar_status_invalido(self):
+        """Teste de atualização de status inválido (deve lançar ValueError)."""
+        with pytest.raises(ValueError):
+            self.task.atualizar_status("INVALIDO")

@@ -58,3 +58,26 @@ class TestTaskService:
         with pytest.raises(ValueError):
             self.service.atualizar_status(1, "concluída")
         self.mock_repository.get.assert_called_once_with(1)
+
+    def test_atualizar_status_invalido(self):
+        """Teste de atualização com status inválido (deve lançar ValueError)."""
+        tarefa_existente = {"id": 1, "descricao": "Desc", "status": "pendente"}
+        self.mock_repository.get.return_value = tarefa_existente
+        with pytest.raises(ValueError):
+            self.service.atualizar_status(1, "invalido")
+        self.mock_repository.get.assert_called_once_with(1)
+
+    def test_remover_tarefa_existente(self):
+        """Teste de remoção de uma tarefa existente."""
+        self.mock_repository.remove.return_value = True
+        resultado = self.service.remover_tarefa(1)
+        assert resultado is True
+        self.mock_repository.remove.assert_called_once_with(1)
+
+    def test_remover_tarefa_nao_existente(self):
+        """Teste de remoção de uma tarefa não existente."""
+        self.mock_repository.remove.return_value = False
+        resultado = self.service.remover_tarefa(1)
+        assert resultado is False
+        self.mock_repository.remove.assert_called_once_with(1)
+

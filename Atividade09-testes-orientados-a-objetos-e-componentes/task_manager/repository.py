@@ -9,9 +9,10 @@ class TaskRepository:
         self._next_id = 1
 
     def save(self, task: Task) -> Task:
-        if task.id is None:
-            task.id = self._next_id
-            self._next_id += 1
+        if task.id is not None:
+            raise ValueError("A tarefa já possui um ID atribuído.")
+        task.id = self._next_id
+        self._next_id += 1
         self.storage.add(task.id, task)
         return task
 
@@ -21,5 +22,11 @@ class TaskRepository:
     def find_all(self) -> list[Task]:
         return self.storage.get_all()
 
+    def update(self, task: Task) -> Task:
+        if task.id is None:
+            raise ValueError("Não é possível atualizar uma tarefa sem ID.")
+        self.storage.update(task.id, task)
+        return task
+
     def delete(self, id: int) -> bool:
-        return self.storage.delete(id)
+        return self.storage.remove(id)

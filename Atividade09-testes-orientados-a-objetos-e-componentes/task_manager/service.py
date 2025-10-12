@@ -1,10 +1,4 @@
-"""Classe TaskService
-Atributo:
-• repository: TaskRepository (recebe no construtor)
-Métodos:
-• criar_tarefa(...): Cria, valida e salva
-• listar_todas(): Retorna todas
-• atualizar_status(id, status): Atualiza status"""
+"""Serviço para gerenciar tarefas."""
 
 class TaskService:
     def __init__(self, repository):
@@ -31,3 +25,6 @@ class TaskService:
         tarefa["status"] = status
         self.repository.add(id, tarefa)
         return tarefa
+
+    def remover_tarefa(self, id):
+        return self.repository.remove(id)
