@@ -3,7 +3,14 @@ Atividade 09 - Gerenciador de Tarefas
 
 Sobre o Projeto
 ----------
-Projeto de exemplo usado na disciplina CC8550 (STS) para demonstrar como organizar um pequeno gerenciador de tarefas com foco em testes orientados a objetos e componentes.
+O projeto implementa um gerenciador de tarefas. A aplicacao combina conceitos de orientacao a objetos (heranca, polimorfismo, encapsulamento) com boas praticas de modularizacao, persistencia em memoria e uma suite de testes automatizados que exercita cenarios unitarios e casos com `Mock`.
+
+Principais objetivos do estudo:
+- Exercitar modelagem de dominio por meio das classes `Task`, `BaseTask` e `RecurringTask`.
+- Demonstrar como separar responsabilidades entre armazenamento (`InMemoryStorage`), repositorio (`TaskRepository`) e camada de servico (`TaskService`).
+- Cobrir funcionalidades com testes unitarios, testes com mocks e cenarios de componente, enfatizando como validar integracoes.
+
+O projeto usa Python 3.10+, `pytest` e `pytest-cov` para garantir feedback rapido sobre a evolucao das funcionalidades.
 
 ## Membros do Grupo
 
@@ -19,6 +26,7 @@ Estrutura do projeto
 ```
 Atividade09-testes-orientados-a-objetos-e-componentes/
 ├── README.md                  # guia rápido do projeto
+├── Relatorio.md               # relatorio dos testes automatizados
 ├── exemplo-de-uso.py          # script simples de demonstracao
 ├── requirements.txt           # dependencias do projeto
 ├── task_manager/              # codigo-fonte principal
@@ -79,9 +87,8 @@ pytest --cov=task_manager
 Exemplo de uso
 --------------
 
-Execute o script de demonstração para ver o fluxo básico funcionando:
+Execute o script de demonstração para ver o fluxo funcionando e também executar os testes automatizados:
 
 ```
 python exemplo-de-uso.py
 ```
-
