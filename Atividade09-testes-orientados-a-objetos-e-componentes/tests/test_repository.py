@@ -5,7 +5,7 @@ from unittest.mock import Mock
 import pytest
 from task_manager.repository import TaskRepository
 from task_manager.storage import InMemoryStorage
-from task_manager.task import Priority, Task
+from task_manager.task import Priority, Task, RecurringTask
 
 @pytest.fixture
 def storage_mock():
@@ -37,6 +37,19 @@ def test_save_atribui_id(repository, storage_mock, example_task):
 def test_save_chama_storage_add(repository, storage_mock, example_task):
     repository.save(example_task)
     storage_mock.add.assert_called_once_with(example_task.id, example_task)
+
+def test_save_aceita_subclasse(repository, storage_mock):
+    recurring = RecurringTask(
+        id=None,
+        titulo="Treino diario",
+        descricao="Corrida matinal",
+        prioridade=Priority.MEDIA,
+        prazo=datetime(2025, 1, 2),
+        frequencia_dias=1,
+    )
+    repository.save(recurring)
+    assert recurring.id == 1
+    storage_mock.add.assert_called_once_with(recurring.id, recurring)
 
 def test_find_by_id_chama_storage_get(repository, storage_mock):
     task = Mock(spec=Task)

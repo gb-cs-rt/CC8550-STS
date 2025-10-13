@@ -1,27 +1,32 @@
 from datetime import datetime, timedelta
-from task_manager.task import Task, Priority
 from task_manager.storage import InMemoryStorage
 from task_manager.repository import TaskRepository
-# from task_manager.service import TaskService
+from task_manager.service import TaskService
+from task_manager.task import Priority, Status
 
-# Criar componentes 
+# Criar componentes
 storage = InMemoryStorage()
 repository = TaskRepository(storage)
-# service = TaskService(repository)
+service = TaskService(repository)
 
-# Criar tarefa
+# Criar e salvar tarefa via serviço
 prazo = datetime.now() + timedelta(days=5)
-task = Task(None, "Estudar", "Python", Priority.ALTA, prazo)
-task.validar()
+tarefa_criada = service.criar_tarefa(
+    titulo="Estudar",
+    descricao="Python",
+    prioridade=Priority.ALTA,
+    prazo=prazo,
+)
+print(f"ID da tarefa salva: {tarefa_criada.id}")
 
-# Salvar 
-task_salva = repository.save(task)
-print(f"ID da tarefa salva: {task_salva.id}")
-
-# Buscar
-encontrada = repository.find_by_id(1)
-print(f"Titulo da tarefa encontrada: {encontrada.titulo}, Prioridade: {encontrada.prioridade.name}")
-
-# Listar todas
-todas = repository.find_all()
+# Buscar todas as tarefas
+todas = service.listar_todas()
 print(f"Número total de tarefas: {len(todas)}")
+
+# Atualizar status
+atualizada = service.atualizar_status(tarefa_criada.id, Status.CONCLUIDA)
+print(f"Status atualizado: {atualizada.status.name}")
+
+# Remover tarefa
+removida = service.remover_tarefa(tarefa_criada.id)
+print(f"Tarefa removida: {removida}")

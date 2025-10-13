@@ -2,7 +2,7 @@
 
 import pytest
 from datetime import datetime, timedelta
-from task_manager.task import Task, Priority, Status
+from task_manager.task import Task, Priority, Status, RecurringTask
 
 class TestTask:
     """Testes para a classe Task."""
@@ -45,3 +45,48 @@ class TestTask:
         """Teste de atualização de status inválido (deve lançar ValueError)."""
         with pytest.raises(ValueError):
             self.task.atualizar_status("INVALIDO")
+
+    def test_status_property_encapsula_enum(self):
+        """O status deve aceitar apenas instancias de Status."""
+        self.task.status = Status.CONCLUIDA
+        assert self.task.status == Status.CONCLUIDA
+        with pytest.raises(ValueError):
+            self.task.status = "concluida"
+
+    def test_recurring_task_herda_de_task(self):
+        """RecurringTask deve herdar comportamentos de Task."""
+        prazo = datetime.now() + timedelta(days=3)
+        recurring = RecurringTask(
+            None,
+            "Treinar",
+            "Praticar diariamente",
+            Priority.ALTA,
+            prazo,
+            frequencia_dias=2,
+        )
+        recurring.validar()  # valida regras da classe base e da subclasse
+        assert isinstance(recurring, Task)
+
+    def test_recurring_task_validar_frequencia_invalida(self):
+        """RecurringTask deve aplicar validacao especifica."""
+        prazo = datetime.now() + timedelta(days=3)
+        recurring = RecurringTask(
+            None,
+            "Academia",
+            "Exercicio regular",
+            Priority.MEDIA,
+            prazo,
+            frequencia_dias=0,
+        )
+        with pytest.raises(ValueError):
+            recurring.validar()
+
+    def test_polimorfismo_validar(self):
+        """Lista de tarefas deve aceitar diferentes implementacoes."""
+        prazo = datetime.now() + timedelta(days=2)
+        tarefas = [
+            Task(None, "Estudar", "Revisao", Priority.MEDIA, prazo),
+            RecurringTask(None, "Caminhar", "Atividade fisica", Priority.BAIXA, prazo, frequencia_dias=1),
+        ]
+        for tarefa in tarefas:
+            tarefa.validar()
