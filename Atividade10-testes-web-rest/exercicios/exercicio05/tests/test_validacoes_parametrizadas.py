@@ -78,9 +78,9 @@ def test_validacao_email_api(email_invalido):
 # Parte B: Validação de Senhas (REST)
 senhas_invalidas = [
     ("123", "muito curta"),
-    ("semNumero", "sem número"),
-    ("semmaiuscula123", "sem maiúscula"),
-    ("12345678", "só números"),
+    ("semNumero", "sem numero"),
+    ("semmaiuscula123", "sem maiuscula"),
+    ("12345678", "so numeros"),
     ("ab", "muito curta")
 ]
 
