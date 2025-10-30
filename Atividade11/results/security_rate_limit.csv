@@ -1,0 +1,2 @@
+ts,test,window_s,limit_per_ip,sent,ok,http_429,elapsed_s
+2025-10-30T01:25:26Z,security_rate_limit,60,100,130,129,0,4.39

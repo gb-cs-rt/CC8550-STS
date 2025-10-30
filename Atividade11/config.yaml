@@ -1,0 +1,26 @@
+
+base_url: "https://httpbin.org"
+endpoint_path: "/"
+timeout_ms: 3000
+concurrency: 200
+duration_s: 60
+ramp_steps:
+  - users: 1000
+    hold_s: 20
+  - users: 5000
+    hold_s: 20
+  - users: 10000
+    hold_s: 30
+  - users: 15000
+    hold_s: 30
+  - users: 20000
+    hold_s: 30
+scalability_instances: [1, 2, 4, 8]
+rate_limit_window_s: 60
+rate_limit_max_per_ip: 100
+targets:
+  perf_p95_ms: 500
+  load_throughput_rps: 2000
+  stress_breakpoint_users: 15000
+  scalability_efficiency_pct: 80
+  security_ratelimit_per_min: 100

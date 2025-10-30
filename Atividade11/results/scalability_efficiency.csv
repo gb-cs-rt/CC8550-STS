@@ -1,0 +1,5 @@
+ts,test,instances,concurrency,rps_ok,efficiency_pct
+2025-10-30T01:22:12Z,scalability_efficiency,1,200,167.83,100.0
+2025-10-30T01:23:15Z,scalability_efficiency,2,400,335.2,99.86
+2025-10-30T01:24:18Z,scalability_efficiency,4,800,390.7,58.2
+2025-10-30T01:25:21Z,scalability_efficiency,8,1600,265.64,19.79
