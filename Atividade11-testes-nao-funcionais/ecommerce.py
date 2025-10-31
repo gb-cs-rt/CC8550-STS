@@ -375,3 +375,10 @@ class EcommerceSimulator:
             bucket = round(ticket, -1)
             values[bucket] += 1
         return values
+
+if __name__ == "__main__":
+    sim = EcommerceSimulator(random_seed=42, baseline_capacity=2000)
+    s = sim.simulate_stage(users=200, duration_s=60, name="baseline")
+    print("RPS:", round(s.throughput_rps, 2))
+    print("Erro (%):", round(s.error_rate, 2))
+    print("Latency:", s.latency_summary())
