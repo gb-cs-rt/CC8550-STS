@@ -11,6 +11,18 @@ def scaling_results():
         baseline_users=4000,
         duration_s=60,
     )
+    baseline_throughput = stages[1].throughput_rps
+    expected = [(servers, baseline_throughput * servers) for servers in stages]
+    actual = [(servers, stage.throughput_rps) for servers, stage in stages.items()]
+    efficiency = calculate_horizontal_scaling_efficiency(expected, actual)
+    min_eff = min(efficiency.values()) if efficiency else 0.0
+    status = "APROVADO" if min_eff > 80 else "RECUSADO"
+    print("\n[Escalabilidade] Métrica: Eficiência horizontal | Meta: > 80%")
+    print(f"  Eficiência mínima observada: {min_eff:.2f}% -> Status: {status}")
+    for servers in sorted(stages):
+        stage = stages[servers]
+        eff = efficiency.get(servers, float("nan"))
+        print(f"  - {servers} servidor(es): eficiência={eff:.2f}%")
     return stages
 
 

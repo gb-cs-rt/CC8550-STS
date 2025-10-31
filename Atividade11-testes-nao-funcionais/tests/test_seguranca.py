@@ -11,12 +11,19 @@ LIMIT_PER_MINUTE = 100
 @pytest.fixture(scope="module")
 def rate_limiting_result():
     simulator = EcommerceSimulator(random_seed=321)
-    return simulator.simulate_rate_limiting(
+    result = simulator.simulate_rate_limiting(
         users=200,
         duration_s=DURATION_S,
         limit_per_minute=LIMIT_PER_MINUTE,
         burst=0,
     )
+    status = "APROVADO" if result.allowed <= LIMIT_PER_MINUTE * ceil(DURATION_S / 60) else "RECUSADO"
+    print("\n[Segurança] Métrica: Rate limiting | Meta: 100 req/min/IP")
+    print(
+        f"  Permitidas: {result.allowed}, Bloqueadas: {result.blocked} "
+        f"({result.blockage_ratio:.2f}%) -> Status: {status}"
+    )
+    return result
 
 
 def test_rate_limit_respects_cap(rate_limiting_result):

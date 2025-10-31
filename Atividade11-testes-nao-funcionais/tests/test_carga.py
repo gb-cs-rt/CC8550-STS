@@ -13,6 +13,14 @@ def load_result():
         jitter=0.25,
         base_error_rate=0.5,
     )
+    latency = stage.latency_summary()
+    status = "APROVADO" if stage.throughput_rps > 2000 else "RECUSADO"
+    print("\n[Carga] Métrica: Throughput sustentado | Meta: > 2000 req/s")
+    print(
+        f"  Resultado: {stage.throughput_rps:.1f} req/s, "
+        f"Erros={stage.error_rate:.2f}%, P95={latency['p95_ms']:.1f}ms -> "
+        f"Status: {status}"
+    )
     return stage
 
 
