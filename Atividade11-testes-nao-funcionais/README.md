@@ -31,24 +31,90 @@ Desenvolver um **plano de testes não funcionais** para um sistema de e-commerce
 - **Métricas coletadas** para cada meta.
 - **Relatório** com análise e **aprovação/reprovação** das metas.
 
-## Simulador (`ecommerce.py`) — visão geral
+## Simulador principal
 
-APIs principais:
-- `simulate_stage` (estágio fixo com latências, erros, throughput)  
-- `simulate_load_curve` (baseline → ramp_up → peak)  
-- `simulate_stress_test` (acha o ponto de quebra por erro tolerado)  
-- `simulate_scaling` (scale-out por servidores + eficiência)  
-- `simulate_rate_limiting` (aplica janela 1 min, retorna permitidos/bloqueados)
+Arquivo **`ecommerce.py`** define a classe **`EcommerceSimulator`**, responsável por gerar **latência sintética**, **throughput**, **erros progressivos** e **efeitos de sobrecarga**.
 
-Auxiliares: `percentile`, `calculate_latency_stats`, `calculate_throughput`, `calculate_horizontal_scaling_efficiency`, `enforce_rate_limit`.  
-Dataclasses: `StageResult`, `StressTestResult`, `RateLimitResult`.
+**Métodos principais**
+- `simulate_stage(users, duration_s, name, jitter, base_error_rate)` — retorna métricas de um estágio (latências, erros e **throughput req/s**).  
+- `simulate_load_curve(stages)` — calcula **throughput** e latências em **baseline → ramp_up → peak**.  
+- `simulate_stress_test(start_users, max_users, step, duration_s, tolerated_error_pct)` — retorna o **primeiro** volume de usuários com violação (ex.: **erro ≥ 5%**).  
+- `simulate_scaling(server_counts, baseline_users, duration_s)` — estima o ganho de **throughput por instância** após **scale-out** e permite calcular a **eficiência horizontal**.  
+- `simulate_rate_limiting(users, duration_s, limit_per_minute, burst)` — aplica **rate limit** de *X req/min* e consolida **permitidos x bloqueados**.
+
+**Funções auxiliares**
+- `percentile` • `calculate_latency_stats` • `calculate_throughput` •  
+  `calculate_horizontal_scaling_efficiency` • `enforce_rate_limit`  
+- *Dataclasses* para consolidar métricas: `StageResult`, `StressTestResult`, `RateLimitResult`.
 
 ---
 
-## Execução dos testes
+## Testes automatizados (pytest)
 
-```bash
-python -m venv .venv
-# PowerShell: .\.venv\Scripts\Activate.ps1  |  Linux/Mac: source .venv/bin/activate
-pip install -r requirements.txt
-pytest -s
+### `tests/test_desempenho.py`
+```python
+from ecommerce import EcommerceSimulator
+
+def test_p95_menor_500ms_em_todas_as_fases():
+    sim = EcommerceSimulator(random_seed=42, baseline_capacity=2000)
+    fases = [
+        ("baseline", 200, 60),
+        ("ramp_up", 800, 60),
+        ("peak", 1600, 60),
+    ]
+    for nome, users, dur in fases:
+        s = sim.simulate_stage(users=users, duration_s=dur, name=nome)
+        p95 = s.latency_summary()["p95_ms"]
+        print(f"[Desempenho] {nome}: P95={p95:.1f}ms, Média={s.latency_summary()['avg_ms']:.1f}ms")
+        assert p95 < 500
+```
+
+### `tests/test_carga.py`
+```python
+from ecommerce import EcommerceSimulator
+
+def test_throughput_sustentado_maior_2000_rps():
+    sim = EcommerceSimulator(random_seed=42, baseline_capacity=2000)
+    s = sim.simulate_stage(users=500, duration_s=1.0, name="peak-1s")
+    print(f"[Carga] Throughput={s.throughput_rps:.1f} req/s, Erros={s.error_rate:.2f}%")
+    assert s.throughput_rps > 2000
+```
+
+### `tests/test_estresse.py`
+```python
+from ecommerce import EcommerceSimulator
+
+def test_ponto_de_quebra_acima_15000():
+    sim = EcommerceSimulator(random_seed=42, baseline_capacity=4000)
+    stress = sim.simulate_stress_test(
+        start_users=12000, max_users=50000, step=2000, duration_s=30, tolerated_error_pct=5.0
+    )
+    print(f"[Estresse] Ponto de quebra={stress.breakpoint_users} usuários | Motivo={stress.reason}")
+    assert stress.breakpoint_users and stress.breakpoint_users > 15000
+```
+
+### `tests/test_escalabilidade.py`
+```python
+from ecommerce import EcommerceSimulator, calculate_horizontal_scaling_efficiency
+
+def test_eficiencia_horizontal_maior_80_porcento():
+    sim = EcommerceSimulator(random_seed=42, baseline_capacity=2000)
+    results = sim.simulate_scaling(server_counts=[1, 2, 4, 8], baseline_users=1600, duration_s=60)
+    ideal = [(srv, results[1].throughput_rps * srv) for srv in results]
+    real  = [(srv, results[srv].throughput_rps) for srv in results]
+    eff = calculate_horizontal_scaling_efficiency(ideal, real)
+    min_eff = min(eff.values())
+    print(f"[Escalabilidade] Eficiências: " + ", ".join([f"{k} srv(s)={v:.2f}%" for k,v in eff.items()]))
+    assert min_eff > 80
+```
+
+### `tests/test_seguranca.py`
+```python
+from ecommerce import EcommerceSimulator
+
+def test_rate_limiting_bloqueia_excesso():
+    sim = EcommerceSimulator(random_seed=42, baseline_capacity=2000)
+    r = sim.simulate_rate_limiting(users=300, duration_s=60, limit_per_minute=100, burst=0)
+    print(f"[Segurança] Permitidas={r.allowed}, Bloqueadas={r.blocked} ({r.blockage_ratio:.2f}%)")
+    assert r.blocked > 0 and r.blockage_ratio > 0.0
+```
