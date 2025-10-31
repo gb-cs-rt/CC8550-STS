@@ -118,3 +118,47 @@ def test_rate_limiting_bloqueia_excesso():
     print(f"[Segurança] Permitidas={r.allowed}, Bloqueadas={r.blocked} ({r.blockage_ratio:.2f}%)")
     assert r.blocked > 0 and r.blockage_ratio > 0.0
 ```
+
+## Execução dos testes
+
+1. Criar ambiente virtual: `python -m venv .venv`
+2. Ativar:
+   - **PowerShell (Windows):** `.\.venv\Scripts\Activate.ps1`
+   - **CMD (Windows):** `.venv\Scripts\activate.bat`
+   - **Linux/macOS:** `source .venv/bin/activate`
+3. Instalar dependências: `pip install -r requirements.txt`
+4. Rodar com métricas impressas: `pytest -s`
+
+## Saída dos testes (`pytest -s`)
+
+tests/test_carga.py [Carga] throughput=2290.2 req/s | erros=0.47% | p95=443.3ms
+tests/test_desempenho.py [Desempenho] baseline p95=447.2ms média=262.4ms p99=554.5ms | ramp_up p95=446.1ms média=262.6ms p99=550.2ms | peak p95=443.6ms média=261.9ms p99=558.5ms
+tests/test_escalabilidade.py [Escalabilidade] ef_min=100.00% | 1srv=100.00% | 2srvs=102.94% | 4srvs=101.65% | 8srvs=101.40%
+tests/test_estresse.py [Estresse] ponto_quebra=48000 usuários | motivo=error_rate 5.13% >= 5.00%
+tests/test_seguranca.py [Segurança] permitidas=300 | bloqueadas=6688 | bloqueio=95.71%
+
+## Resultados das métricas
+
+| **Tipo**        | **Métricas coletadas (amostra)**                                                                                  | **Meta**            | **Resultado**                           | **Status** |
+|-----------------|--------------------------------------------------------------------------------------------------------------------|---------------------|-----------------------------------------|-----------|
+| **Desempenho**  | **P95:** 447.2 / 446.1 / 443.6 ms (baseline/ramp/peak); **média ≈** 262 ms; **P99 ~** 554–559 ms                  | **P95 < 500 ms**    | Dentro do limite em todas as fases      | **Aprovado** |
+| **Carga**       | **Throughput:** 2290.2 req/s; **erro:** 0.47%; **P95:** 443.3 ms                                                   | **> 2000 req/s**    | Acima da meta                           | **Aprovado** |
+| **Estresse**    | **Ponto de quebra:** 48.000 usuários (violação por erro ≥ 5%)                                                      | **> 15.000 usuários** | Muito acima do alvo                     | **Aprovado** |
+| **Escalabilidade** | **Eficiência horizontal:** 100.0%, 102.94%, 101.65%, 101.40% (1/2/4/8 servidores)                              | **> 80%**           | Escala quase linear preservada          | **Aprovado** |
+| **Segurança**   | **Rate limit 100 req/min →** **permitidas:** 300 • **bloqueadas:** 6688 (95.71%)                                   | **100 req/min/IP**  | Política aplicada corretamente          | **Aprovado** |
+
+## Análise de aprovação
+
+- **Desempenho** — margem confortável (**P95 ~ 443–447 ms**), pior caso ainda **< 500 ms**.
+- **Carga** — **2,29k req/s** sustentados **> 2k req/s**, com erro baixo (**0,47%**).
+- **Estresse** — degradação ocorre somente por volta de **48k usuários**, respeitando meta **> 15k**.
+- **Escalabilidade** — duplicar instâncias praticamente dobra o throughput (eficiência **~100%** observada).
+- **Segurança** — **rate limiting** efetivo: grande parcela de excedentes **bloqueada** (**95,71%**).
+
+---
+
+## Observações de reprodutibilidade
+
+- `random_seed=42` utilizado para garantir resultados estáveis.
+- Parâmetros de cada teste documentados nos próprios arquivos em `tests/`.
+- Rodar `pytest -s` reproduz as métricas exibidas acima.
